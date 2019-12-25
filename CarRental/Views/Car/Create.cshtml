@@ -1,0 +1,173 @@
+﻿@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using CarRental.Models.Entities
+@using CarRental.Models
+@using CarRental.Controllers
+@model Car
+
+@{
+
+    var allModels= (List<ModelOfBrand>)ViewBag.AllModels;
+    var allColor = (List<Color>)ViewBag.AllColor;
+
+    var modelSelectList = new SelectList(allModels,"Id","Model");
+    var colorSelectList = new SelectList(allColor, "Id", "CarColor");
+}
+
+@{
+    var FuelTypelist = new List<SelectListItem>
+{
+new SelectListItem
+{Text="Benzin",Value="Benzin" ,Selected=true},
+new SelectListItem
+{ Text="LPG",Value="LPG"},
+new SelectListItem
+{Text="Dizel",Value="Dizel" },
+};
+
+    var EngineCap = new List<SelectListItem>
+{
+new SelectListItem
+{Text="1.2",Value="1.2" ,Selected=true},
+new SelectListItem
+{ Text="1.4",Value="1.4"},
+new SelectListItem
+{Text="1.6",Value="1.6" },
+new SelectListItem
+{Text="1.8",Value="1.8"},
+new SelectListItem
+{ Text="2.0",Value="2.0"},
+new SelectListItem
+{Text="2.2",Value="2.2" },
+};
+
+    var EnginePow = new List<SelectListItem>
+{
+new SelectListItem
+{Text="90",Value="90" ,Selected=true},
+new SelectListItem
+{ Text="95",Value="95"},
+new SelectListItem
+{Text="100",Value="100" },
+new SelectListItem
+{Text="105",Value="105"},
+new SelectListItem
+{ Text="110",Value="110"},
+new SelectListItem
+{Text="120",Value="120" },
+};
+}
+<!-- Page Content -->
+<div role="main" class="container">
+    <div class="row">
+        <div class="col-lg-4">           
+        </div>
+        <!-- /.col-lg-3 -->
+      
+        <div class="col-lg-4" style="margin-bottom:100px">
+            <h2 style="color:aqua;text-align:center;margin-top:50px;margin-bottom:30px">Araç Kaydet</h2>
+            
+            @using (Html.BeginForm("Create", "Car", FormMethod.Post))
+            {
+            <table>
+                <tr>
+                    <td>@Html.LabelFor(m => m.ModelOfBrandId, "Marka")</td>
+                    <td>
+                        @Html.DropDownListFor(m => m.ModelOfBrandId, modelSelectList)
+                    @*@{
+                string brandId = modelSelectList.DataValueField;
+                int abc = Convert.ToInt32(brandId);
+
+                var db = new CarRentalContext();
+
+                string brandName = db.Brands.SingleOrDefault(m => m.Id == abc).BrandName;
+            }*@
+                </td>
+            </tr>
+
+            <tr>
+                <td> @Html.LabelFor(m => m.EngineCapacity, "Motor Kapasite")</td>
+                <td>  @Html.DropDownListFor(m => m.EngineCapacity,EngineCap)</td>
+                
+            </tr>
+
+            <tr>
+                <td>  @Html.LabelFor(m => m.EnginePower, "Motor Gücü")</td>
+                <td> @Html.DropDownListFor(m => m.EnginePower,EnginePow)</td>
+                
+            </tr>
+
+            <tr>
+                <td>@Html.LabelFor(m => m.AutomaticGear, "Otomatik Vites")</td>
+                <td> @Html.CheckBoxFor(m => m.AutomaticGear)</td>
+            </tr>
+            <tr>
+                <td> @Html.LabelFor(m => m.FuelType, "Yakıt Tipi")</td>
+                <td>@Html.DropDownListFor(m => m.FuelType, FuelTypelist)</td>
+                
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(m => m.HirePrice, "Kira Fiyatı")</td>
+                <td> @Html.TextBoxFor(m => m.HirePrice)</td>
+                <td>@Html.ValidationMessageFor(m => m.HirePrice)</td>
+                <td class="alert-warning">@TempData["ms"]</td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(m => m.PhotoPath, "Araç Foto")</td>
+                <td> @Html.TextBoxFor(m => m.PhotoPath)</td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(m => m.Plate, "Plaka")</td>
+                <td> @Html.TextBoxFor(m => m.Plate)</td>
+                <td>@Html.ValidationMessageFor(m=>m.Plate)</td>               
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(m => m.ColorId, "Renk")</td>
+                <td> @Html.DropDownListFor(m => m.ColorId, colorSelectList)</td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(m => m.PurchasingDate, "Satın alınma")</td>
+                <td> @Html.TextBoxFor(m => m.PurchasingDate, new { type = "date" })</td>              
+            </tr>
+            <tr>
+                <td></td>
+                <td><button id="kaydet" onclick="saveMessage()">Kaydet</button></td>
+                <p class="alert-warning">@TempData["plaka"]</p>
+            </tr>
+           
+            </table>
+
+            }
+            <div class="col-lg-4"></div>
+            <script>
+
+                //$("#kaydet").on('click', function (e) {
+
+                //    e.preventDefault();
+
+                //    $.ajax({
+                //        url: '/Car/Create',
+                //        success: function (result) {
+                //            alert("aaa");
+                //        }
+                //    })
+                //});
+
+                function saveMessage() {
+                   alert("Araba Kaydedildi");
+                }
+            </script>
+            <!-- /.row -->
+        </div>
+            <!-- /.col-lg-9 -->
+        </div>
+    <!-- /.row -->
+</div>
+<!-- /.container -->
+
+
+
+

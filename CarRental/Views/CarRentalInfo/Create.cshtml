@@ -1,0 +1,100 @@
+﻿@using CarRental.Models.Entities;
+@using CarRental.Models;
+@using CarRental.Controllers;
+@model CarRentalInfo
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@{
+    var allCar = (List<Car>)ViewBag.AllCar;
+    var carSelectList = new SelectList(allCar, "Id", "Plate",1);
+
+
+    var allCustomer = (List<Customer>)ViewBag.AllCustomer;
+    var customerSelectList = new SelectList(allCustomer, "Id", "FullName");
+}
+
+<div class="row">
+
+    <div class="col-lg-5"></div>
+    <div class="col-lg-4" style="margin-bottom:230px;margin-top:40px">
+        <h2 style="color:aqua;margin-bottom:20px">Kira Kaydetme</h2>
+        @using (Html.BeginForm("Create", "CarRentalInfo", FormMethod.Post))
+        {
+            <table>
+                <tr>
+                    <td>@Html.LabelFor(m => m.CarId, "Araba")</td>
+                    <td>@Html.DropDownListFor(m => m.CarId, carSelectList)</td>
+                    
+                    @*@{               
+                        object a = carSelectList.SelectedValue;
+
+                        var db = new CarRentalContext();
+
+                        int modelId = db.Cars.SingleOrDefault(m => m.Id == (int)a).ModelOfBrandId;
+                        string carModel = db.ModelOfBrands.SingleOrDefault(m => m.Id == modelId).Model;
+
+                        int brandId = db.ModelOfBrands.SingleOrDefault(m => m.Id == modelId).BrandId;
+                        string carBrand = db.Brands.SingleOrDefault(m => m.Id == brandId).BrandName;
+                    }
+
+                    <td>@carModel-@carBrand</td>*@
+                </tr>
+                <tr>
+                    <td>@Html.LabelFor(m => m.CustomerId, "Müşteri")</td>
+                    <td>  @Html.DropDownListFor(m => m.CustomerId, customerSelectList)</td>
+
+                </tr>
+                <tr>
+                    <td>@Html.LabelFor(m => m.StartingDate)</td>
+                    <td>@Html.TextBoxFor(m => m.StartingDate, new { type = "date" })</td>
+                    <td>@Html.ValidationMessageFor(m=>m.StartingDate)</td>
+                </tr>
+                <tr>
+                    <td>@Html.LabelFor(m => m.EndDate)</td>
+                    <td>@Html.TextBoxFor(m => m.EndDate, new { type = "date" })</td>
+                    <td>@Html.ValidationMessageFor(m=>m.EndDate)</td>
+                </tr>
+                <tr>
+                    <td>@Html.LabelFor(m => m.Cancel)</td>
+                    <td> @Html.TextBoxFor(m => m.Cancel, new { type = "date" })</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>
+                        <button id="CarRentCreate">Kaydet</button>
+                        <p class="alert-warning">@TempData["Message"]</p>
+                        <p class="alert-warning">@TempData["msg"]</p>
+                    </td>
+                </tr>
+
+            </table>
+
+
+            @*@{
+                int custId = Model.CustomerId;
+                var dbContext = new CarRentalContext();
+
+                string message = string.Empty;
+
+                bool varMi = dbContext.Customers.FirstOrDefault(m => m.Id == custId).Licence;
+                if (!varMi)
+                {
+                    message = "Ehliyeti olmayan müşteri araba kiralayamaz";
+
+                }
+                else
+                {
+                    message = "Müşteri araba kiralamaya uygundur.";
+                }
+            }*@
+        }
+    </div>
+    <div class="col-lg-3"></div>
+</div>
+<script>
+                function saveMessage() {
+                    alert("Kira Kaydedildi");
+                }
+</script>

@@ -1,0 +1,97 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@using CarRental.Controllers
+@using CarRental.Models;
+@using CarRental.Models.Entities
+@model List<Customer>
+
+<a style="text-align:left;margin-bottom:30px">@Html.ActionLink("Müşteri Ekle", "Create", "Customer", new { @class = "form-group" })</a>
+<div class="row">
+
+    @{
+        var con = new CarRentalContext();
+        int elemanSayisi = con.Customers.Count();
+
+        if (elemanSayisi < 1)
+        {
+            <div class="col" style="margin-bottom:400px;text-align:center;color:red">Kayıtlı herhangi bir müşteri yok</div>
+
+        }
+    }
+    @foreach (var customer in Model)
+    {
+        <div class="col">
+            <!---->
+            <div class="card h-100 w-100">
+
+                <div class="card-body">
+                    <h4 class="card-title">
+                        <p style="text-align:center;color:darkturquoise">
+                            @{
+                                int id = customer.Id;
+                                var dbcontext = new CarRentalContext();
+                                string isim = dbcontext.Customers.FirstOrDefault(m => m.Id == id).FirstName;
+                                string soyisim = dbcontext.Customers.FirstOrDefault(m => m.Id == id).LastName;
+
+                            }
+                            @isim-@soyisim
+                        </p>
+                    </h4>
+
+                    <p class="card-text" style="margin-left:30px">
+                        <table>
+                            <tr>
+                                <td style="color:red;text-align:left">Yaş:</td>
+                                <td style="text-align:right">@customer.Age</td>
+                            </tr>
+                            <tr>
+                                <td style="color:red;text-align:left">Telefon:</td>
+                                <td style="text-align:right">@customer.Phone</td>
+                            </tr>
+                            <tr>
+                                <td style="color:red;text-align:left">Kan Grubu:</td>
+                                <td style="text-align:right">@customer.BloodGroup</td>
+                            </tr>
+                            <tr>
+                                <td style="color:red;text-align:left">Adres:</td>
+                                <td style="text-align:right">@customer.Adress</td>
+                            </tr>
+                            <tr>
+                                <td style="color:red;text-align:left">Kredi Kartı No:</td>
+                                <td style="text-align:right">@customer.CreditCardNumber</td>
+                            </tr>
+                            <tr>
+                                <td style="color:red;text-align:left">TC:</td>
+                                <td style="text-align:right">@customer.TC</td>
+                            </tr>
+                            @{
+                                string driverLicence = string.Empty;
+                                if (customer.Licence)
+                                {
+                                    driverLicence = "Var";
+                                }
+                                else
+                                {
+                                    driverLicence = "Yok";
+                                }
+                            }
+                            <tr>
+                                <td style="color:red;text-align:left">Ehliyet:</td>
+                                <td style="text-align:right">@driverLicence</td>
+                            </tr>
+                        </table>
+
+                    </p>
+                </div>
+                <div class="card-footer" style="margin-bottom:100px">
+                    @Html.ActionLink("Sil", "Delete", new { id = customer.Id })
+                    @Html.ActionLink("Güncelle", "Edit", new { id = customer.Id })
+                </div>
+            </div>
+        </div><!---->
+    }
+
+</div>

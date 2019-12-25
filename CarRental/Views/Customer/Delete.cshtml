@@ -1,0 +1,31 @@
+﻿@using CarRental.Models.Entities;
+@using CarRental.Models;
+@using CarRental.Controllers;
+@model Customer
+@{
+    ViewBag.Title = "Delete";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="col"  style="margin-bottom:370px">
+    @using (Html.BeginForm("Delete", "Customer", FormMethod.Post))
+    {
+        @Html.HiddenFor(m => m.Id);
+
+    <p class="alert alert-danger">
+        @{
+            var dbcontext = new CarRentalContext();
+            string isim = dbcontext.Customers.FirstOrDefault(m => m.Id == @Model.Id).FirstName;
+            string soyisim = dbcontext.Customers.FirstOrDefault(m => m.Id == @Model.Id).LastName;
+        }
+        Dikkat! <strong>@isim-@soyisim</strong> isimli müşteri silinecek.
+        <br />
+        Devam etmek istiyor musunuz?<br />
+        @Html.ActionLink("İptal", "Index", null, new { @class = "btn btn-warning" })
+        <button type="submit" class="btn btn-primary" id="CustomerDelete">Sil</button>
+    </p>
+        
+    }
+
+</div>
+

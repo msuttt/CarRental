@@ -1,0 +1,48 @@
+﻿@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+@using CarRental.Models.Entities;
+@using CarRental.Models;
+@using CarRental.Controllers;
+@model CarRentalInfo
+
+<div class="col-lg-9">
+    @using (Html.BeginForm("Delete", "CarRentalInfo", FormMethod.Post))
+    {
+        @Html.HiddenFor(m => m.Id);
+
+    <p class="alert alert-danger" style="margin-bottom:337px">
+        @{ 
+            int id = Model.CarId;
+            int custId = Model.CustomerId;
+
+            var dbcontext = new CarRentalContext();
+
+            int modelId = dbcontext.Cars.FirstOrDefault(m => m.Id == id).ModelOfBrandId;
+            int brandId = dbcontext.ModelOfBrands.FirstOrDefault(m => m.Id == modelId).BrandId;
+            string brandName = dbcontext.Brands.SingleOrDefault(m => m.Id == brandId).BrandName;
+            brandName+= " ";
+            brandName+= dbcontext.ModelOfBrands.FirstOrDefault(m => m.Id == modelId).Model;
+
+            string name = dbcontext.Customers.FirstOrDefault(m => m.Id == custId).FirstName;
+            name += " ";
+            name+= dbcontext.Customers.FirstOrDefault(m => m.Id == custId).LastName;
+        }
+        Dikkat! <strong>@name</strong> isimli kişiye kiralanmış
+        <strong>@brandName</strong> isimli araba silinecek.
+        <br />
+        Devam etmek istiyor musunuz?<br />
+        @Html.ActionLink("İptal", "Index", null, new { @class = "btn btn-warning" })
+        <button type="submit" class="btn btn-primary" id="CarDelete">Sil</button>
+    </p>
+    
+    }
+
+</div>
+
+
+
+

@@ -1,0 +1,125 @@
+﻿
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using CarRental.Models;
+@using CarRental.Models.Entities;
+@using CarRental.Controllers;
+@model Car
+
+@{
+    var allModels = (List<ModelOfBrand>)ViewBag.AllModels;
+    var allColor = (List<Color>)ViewBag.AllColors;
+
+
+    var modelSelectList = new SelectList(allModels, "Id", "Model");
+    var colorSelectList = new SelectList(allColor, "Id", "CarColor");
+}
+@{
+    var FuelTypelist = new List<SelectListItem>
+{
+new SelectListItem
+{Text="Benzin",Value="Benzin" ,Selected=true},
+new SelectListItem
+{ Text="LPG",Value="LPG"},
+new SelectListItem
+{Text="Dizel",Value="Dizel" },
+};
+
+    var EngineCap = new List<SelectListItem>
+{
+new SelectListItem
+{Text="1.2",Value="1.2" ,Selected=true},
+new SelectListItem
+{ Text="1.4",Value="1.4"},
+new SelectListItem
+{Text="1.6",Value="1.6" },
+new SelectListItem
+{Text="1.8",Value="1.8"},
+new SelectListItem
+{ Text="2.0",Value="2.0"},
+new SelectListItem
+{Text="2.2",Value="2.2" },
+};
+
+    var EnginePow = new List<SelectListItem>
+{
+new SelectListItem
+{Text="90",Value="90" ,Selected=true},
+new SelectListItem
+{ Text="95",Value="95"},
+new SelectListItem
+{Text="100",Value="100" },
+new SelectListItem
+{Text="105",Value="105"},
+new SelectListItem
+{ Text="110",Value="110"},
+new SelectListItem
+{Text="120",Value="120" },
+};
+}
+<div class="row">
+    <div class="col-lg-4"></div>
+    <div class="col-lg-4" style="margin-top:50px">
+        <h2 style="color:aqua;margin-bottom:50px;text-align:center">Araç Güncelle</h2>
+        @using (Html.BeginForm("Edit", "Car", FormMethod.Post))
+        {
+            @Html.HiddenFor(m => m.Id);
+        <table>
+            <tr>
+                <td> @Html.LabelFor(m => m.ModelOfBrandId, "Marka")</td>
+                <td> @Html.DropDownListFor(m => m.ModelOfBrandId, modelSelectList)</td>
+            </tr>
+            <tr>
+                <td> @Html.LabelFor(m => m.EngineCapacity, "Motor Kapasite")</td>
+                <td> @Html.DropDownListFor(m => m.EngineCapacity, EngineCap)</td>
+                <td>@Html.ValidationMessageFor(m => m.EngineCapacity)</td>
+            </tr>
+            <tr>
+                <td> @Html.LabelFor(m => m.EnginePower, "Motor Gücü")</td>
+                <td> @Html.DropDownListFor(m => m.EnginePower, EnginePow)</td>
+                <td>@Html.ValidationMessageFor(m => m.EnginePower)</td>
+            </tr>
+            <tr>
+                <td> @Html.LabelFor(m => m.AutomaticGear, "Otomatik Vites")</td>
+                <td> @Html.CheckBoxFor(m => m.AutomaticGear)</td>
+            </tr>
+            <tr>
+                <td> @Html.LabelFor(m => m.FuelType, "Yakıt Tipi")</td>
+                <td> @Html.DropDownListFor(m => m.FuelType, FuelTypelist)</td>
+                <td>@Html.ValidationMessageFor(m => m.FuelType)</td>
+            </tr>
+            <tr>
+                <td> @Html.LabelFor(m => m.HirePrice, "Kira Fiyatı")</td>
+                <td> @Html.EditorFor(m => m.HirePrice)</td>
+                <td>@Html.ValidationMessageFor(m => m.HirePrice)</td>
+                <td class="alert-warning">@TempData["ms"]</td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(m => m.Plate, "Plaka")</td>
+                <td> @Html.TextBoxFor(m => m.Plate)</td>
+                <td>@Html.ValidationMessageFor(m => m.Plate)</td>
+               
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(m => m.ColorId, "Renk")</td>
+                <td> @Html.DropDownListFor(m => m.ColorId,colorSelectList)</td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(m => m.PurchasingDate, "Satın alınma")</td>
+                <td> @Html.TextBoxFor(m => m.PurchasingDate,new { type = "date" })</td>
+                <td>@Html.ValidationMessageFor(m => m.PurchasingDate)</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td><button id="ArabaGuncelle" style="margin-bottom:100px">Kaydet</button></td>
+                <p class="alert-warning">@TempData["plaka"]</p>
+            </tr>
+        </table>                                                              
+        }
+    </div>
+   <div class="col-lg-4"></div>
+</div>
+

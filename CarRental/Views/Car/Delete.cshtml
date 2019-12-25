@@ -1,0 +1,43 @@
+﻿
+@{
+    ViewBag.Title = "Delete";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using CarRental.Models.Entities
+@using CarRental.Models
+@using CarRental.Controllers
+@model Car
+
+<div class="col-lg-9">
+    @using (Html.BeginForm("Delete", "Car", FormMethod.Post))
+    {
+        @Html.HiddenFor(m => m.Id);
+
+    <p class="alert alert-danger" style="margin-bottom:380px">
+        @{ @*Car car = new Car();*@
+
+            //int id = car.BrandId;
+            //int carId = car.Id;
+
+            var dbcontext = new CarRentalContext();
+
+            int brandId = dbcontext.ModelOfBrands.FirstOrDefault(m => m.Id == @Model.ModelOfBrandId).BrandId;
+            string brand=dbcontext.Brands.SingleOrDefault(m => m.Id == brandId).BrandName;
+            string brandModel = dbcontext.ModelOfBrands.FirstOrDefault(m => m.Id == @Model.ModelOfBrandId).Model;
+            string plate = dbcontext.Cars.SingleOrDefault(m => m.Id == @Model.Id).Plate;
+            //string plate = dbcontext.CarLicenceInfos.FirstOrDefault(m => m.CarId == @Model.Id).Plate;
+        }
+        Dikkat! <strong>@brand-@brandModel</strong> isimli <strong>@plate</strong> plakalaı araba silinecek.
+        <br />
+        Devam etmek istiyor musunuz?<br />
+        @Html.ActionLink("İptal", "Index", null, new { @class = "btn btn-warning" })
+        <button type="submit" class="btn btn-primary" id="CarDelete">Sil</button>
+
+
+    </p>
+      
+    }
+
+</div>
+

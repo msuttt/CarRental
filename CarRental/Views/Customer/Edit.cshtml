@@ -1,0 +1,102 @@
+﻿@using CarRental.Models.Entities;
+@using CarRental.Models;
+@using CarRental.Controllers;
+@model Customer
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@{ 
+    var BloodGroup = new List<SelectListItem>
+{
+new SelectListItem
+{Text="A+",Value="A+" ,Selected=true},
+new SelectListItem
+{ Text="A-",Value="A-"},
+new SelectListItem
+{Text="B+",Value="B+" },
+new SelectListItem
+{Text="B-",Value="B-"},
+new SelectListItem
+{Text="O+",Value="O+"},
+new SelectListItem
+{Text="O-",Value="O-"},
+new SelectListItem
+{Text="AB+",Value="AB+"},
+new SelectListItem
+{Text="AB-",Value="AB-"}
+};
+}
+<div class="row">
+    <div class="col-lg-5"></div>
+    <div class="col-lg-3" style="margin-bottom:100px;position:center;margin-top:30px">
+        <h2 style="text-align:center;color:aqua;margin-bottom:40px">Müşteri Güncelleme</h2>
+        @using (Html.BeginForm("Edit", "Customer", FormMethod.Post))
+        {
+            <table>
+                @Html.HiddenFor(m => m.Id)
+                <tr>
+                    <td>@Html.LabelFor(m => m.FirstName, "İsim")</td>
+                    <td> @Html.TextBoxFor(m => m.FirstName)</td>
+                    <td class="alert-warning">@TempData["errMsg"]</td>
+                </tr>
+                <tr>
+                    <td>@Html.LabelFor(m => m.LastName, "Soyisim")</td>
+                    <td> @Html.TextBoxFor(m => m.LastName)</td>
+                    <td class="alert-warning">@TempData["errMsg"]</td>
+                </tr>
+
+                <tr>
+                    <td>@Html.LabelFor(m => m.Age, "Yaş")</td>
+                    <td>  @Html.TextBoxFor(m => m.Age)</td>
+                    <td class="alert-warning">@TempData["harf"]</td>
+                </tr>
+
+                <tr>
+                    <td>@Html.LabelFor(m => m.Phone, "Telefon")</td>
+                    <td>  @Html.TextBoxFor(m => m.Phone)</td>
+                    <td>@Html.ValidationMessageFor(m => m.Phone)</td>
+                </tr>
+
+                <tr>
+                    <td>@Html.LabelFor(m => m.BloodGroup, "Kan Grubu")</td>
+                    <td> @Html.DropDownListFor(m => m.BloodGroup,BloodGroup)</td>                  
+                </tr>
+
+                <tr>
+                    <td>@Html.LabelFor(m => m.Adress, "Adres")</td>
+                    <td> @Html.TextBoxFor(m => m.Adress)</td>
+                </tr>
+
+                <tr>
+                    <td>@Html.LabelFor(m => m.CreditCardNumber, "Kredi Kart No")</td>
+                    <td>@Html.TextBoxFor(m => m.CreditCardNumber)</td>
+                    <td>@Html.ValidationMessageFor(m => m.CreditCardNumber)</td>
+                </tr>
+
+                <tr>
+                    <td>@Html.LabelFor(m => m.TC, "TC")</td>
+                    <td>  @Html.TextBoxFor(m => m.TC)</td>
+                    <td>@Html.ValidationMessageFor(m => m.TC)</td>
+                </tr>
+
+                <tr>
+                    <td>@Html.LabelFor(m => m.Licence, "Ehliyet")</td>
+                    <td>  @Html.CheckBoxFor(m => m.Licence)</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td><button id="CustomerEdit" onclick="saveMessage()">Kaydet</button></td>                 
+                </tr>
+            </table>
+
+        }
+    </div>
+    <div class="col-lg-4"></div>
+</div>
+<script>
+                function saveMessage() {
+                    alert("Müşteri Güncellendi");
+                }
+</script>
+

@@ -1,0 +1,2 @@
+*Araba kaydetme bölümünde kayýt baþarýlý olsa da olmasa da baþarýlý diyor.Bunu düzelt.
+*Arabalara foto eklenecek

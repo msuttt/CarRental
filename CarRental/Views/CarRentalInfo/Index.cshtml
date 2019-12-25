@@ -1,0 +1,84 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@using CarRental.Controllers
+@using CarRental.Models;
+@using CarRental.Models.Entities
+
+@model List<CarRentalInfo>
+<a style="text-align:left;margin-bottom:30px">@Html.ActionLink("Kira Ekle", "Create", "CarRentalInfo", new { @class = "form-group" })</a>
+<div class="row">
+    @{ 
+        var con = new CarRentalContext();
+        int elemanSayisi=con.CarRentalInfos.Count();
+
+        if (elemanSayisi < 1)
+        {
+           <div class="col" style="margin-bottom:400px;text-align:center;color:red">Kiralanmış herhangi bir araba yok</div>
+           
+        }
+    }
+    
+   
+    @foreach (var carRentInfo in Model)
+    {
+        <div class="col-lg-4 col-md-6 mb-4">
+            <!---->
+            <div class="card h-100">
+
+                <div class="card-body">
+                    <h4 class="card-title">
+
+                        <a href="#">
+                            @{
+                                int id = carRentInfo.CarId;
+                                var dbcontext = new CarRentalContext();
+
+                                int modelId = dbcontext.Cars.FirstOrDefault(m => m.Id == id).ModelOfBrandId;
+                                int brandId = dbcontext.ModelOfBrands.SingleOrDefault(m => m.Id == modelId).BrandId;
+
+                                string carBrand = dbcontext.Brands.FirstOrDefault(m => m.Id == brandId).BrandName;
+                                string carModel = dbcontext.ModelOfBrands.FirstOrDefault(m => m.Id == modelId).Model;
+
+
+                                int custid = carRentInfo.CustomerId;
+                                string custName = dbcontext.Customers.FirstOrDefault(m => m.Id == custid).FirstName;
+                                string custLastName = dbcontext.Customers.FirstOrDefault(m => m.Id == custid).LastName;
+                            }
+                            @carBrand-@carModel @custName-@custLastName
+                        </a>
+
+                    </h4>
+
+                    <p class="card-text" style="margin-bottom:180px">
+                        <label style="color:red">Başlangıç Tarihi:</label><label>@carRentInfo.StartingDate</label><br />
+                        <label style="color:red">Bitiş Tarihi:</label><label>@carRentInfo.EndDate</label><br />
+                        @{
+
+                            var db = new CarRentalContext();
+                            var date = db.CarRentalInfos.SingleOrDefault(m => m.Id == carRentInfo.Id).Cancel;
+                            if (date == null)
+                            {
+                                <label><label style="color:red">İptal:</label>İptal Yok</label>
+                            }
+                            else
+                            {
+                                <label><label style="color:red">İptal:</label>@carRentInfo.Cancel</label>
+                            }
+                        }
+
+                    </p>
+                </div>
+                <div class="card-footer">
+                    @Html.ActionLink("Sil", "Delete", new { id = carRentInfo.Id })
+                    @Html.ActionLink("Güncelle", "Edit", new { id = carRentInfo.Id })
+                </div>
+            </div>
+
+        </div><!---->
+    }
+</div>
+
+
